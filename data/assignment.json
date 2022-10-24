@@ -1,0 +1,12 @@
+[
+    {
+        "id": "second-assignment",
+        "title": "The first assignment",
+        "description": "something about the fist assignment"
+    },
+    {
+        "id": "second-assignment",
+        "title": "The second assignment",
+        "description": "something about the second assignment"
+    }
+]
