@@ -1,8 +1,47 @@
-import type { NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import styles from '../styles/Site.module.css';
+import { useState, useContext, useEffect } from 'react';
 
-const Home: NextPage = () => {
+import { StoreContext } from '../store';
+import { SET_COUNTER, SET_TASKS } from '../store/actions';
+
+type Task = {
+    description: string;
+    slug: string;
+};
+
+type Props = {
+    id: string;
+    title: string;
+    tasks: Array<Task>;
+};
+
+export const getServerSideProps = async () => {
+    const res = await fetch('https://5cadf493845049001423c167.mockapi.io/list');
+    const data = await res.json();
+    return { props: data[0] };
+};
+
+const Home = ({ title, tasks }: Props) => {
+    const [counterLocal, setCounterLocal] = useState(0);
+    const [isHydrated, setIsHydrated] = useState(false);
+    const store = useContext(StoreContext);
+    const { dispatch } = store;
+    const { counter } = store.state;
+
+    useEffect(() => {
+        dispatch({ type: SET_TASKS, payload: { tasks: tasks } });
+        setIsHydrated(true);
+    }, []);
+
+    const handleOnClick = (typeState: string) => {
+        const { dispatch } = store;
+        typeState === 'local'
+            ? setCounterLocal(counterLocal + 1)
+            : dispatch({ type: SET_COUNTER, payload: { counter: counter + 1 } });
+    };
+
     return (
         <div className={styles.container}>
             <Head>
@@ -12,13 +51,26 @@ const Home: NextPage = () => {
             </Head>
 
             <main className={styles.main}>
-                <h1 className={styles.title}>
-                    Welcome to <a href="https://nextjs.org">Next.js!</a>
-                </h1>
-
-                <p className={styles.description}>
-                    Get started by editing <code className={styles.code}>pages/index.tsx</code>
-                </p>
+                <h1 className={styles.title}>{title}</h1>
+                <div className={styles.tasks}>
+                    {tasks.map((task, i) => (
+                        <div className={styles.tasks} key={i}>
+                            <Link href={task.slug}>
+                                <a className={`${isHydrated && styles.pink} ${styles.task}`}>
+                                    {task.description}
+                                </a>
+                            </Link>
+                        </div>
+                    ))}
+                </div>
+                <div>
+                    <span>Counter:{counterLocal}</span>
+                </div>
+                <div>
+                    <span>Global Counter:{counter}</span>
+                </div>
+                <button onClick={() => handleOnClick('local')}>Local counter</button>
+                <button onClick={() => handleOnClick('global')}>Global counter</button>
             </main>
         </div>
     );

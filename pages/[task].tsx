@@ -1,6 +1,9 @@
-import type { InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import styles from '../styles/Site.module.css';
+import { useContext } from 'react';
+import { useRouter } from 'next/router';
+import { StoreContext } from '../store';
 
 type Props = {
     id: string;
@@ -10,6 +13,12 @@ type Props = {
 };
 
 export default function Activity({ title, description }: Props) {
+    const store = useContext(StoreContext);
+    const router = useRouter();
+    const { tasks } = store.state;
+
+    const task = tasks.find((task) => task.slug === router.query.task);
+
     return (
         <div className={styles.container}>
             <Head>
@@ -19,23 +28,12 @@ export default function Activity({ title, description }: Props) {
             </Head>
 
             <main className={styles.main}>
-                <h1 className={styles.title}>
-                    <a> {title}</a>
-                </h1>
-
-                <p className={styles.description}>{description}</p>
+                <h1 className={styles.title}>Hi</h1>
+                <p className={styles.description}>{task?.description}</p>
+                <Link href="/">
+                    <a>Back</a>
+                </Link>
             </main>
         </div>
     );
-}
-import fsPromises from 'fs/promises';
-import path from 'path';
-
-export async function getServerSideProps() {
-    const filePath = path.join(process.cwd(), 'data/activity.json');
-    const jsonData = await fsPromises.readFile(filePath);
-    const info = JSON.parse(jsonData.toString());
-    return {
-        props: info,
-    };
 }

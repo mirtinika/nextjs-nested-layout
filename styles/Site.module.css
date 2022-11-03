@@ -11,6 +11,7 @@
     justify-content: center;
     align-items: center;
 }
+
 .topbar {
     background-color: pink;
     height: 50px;
@@ -28,6 +29,13 @@
     border-top: 1px solid #eaeaea;
     justify-content: center;
     align-items: center;
+}
+
+.footer a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
 }
 
 .footer a {
@@ -58,11 +66,20 @@
 .description {
     text-align: center;
 }
-
-.description {
-    margin: 4rem 0;
-    line-height: 1.5;
-    font-size: 1.5rem;
+.pink {
+    background-color: pink;
+}
+.tasks {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.task {
+    margin: 5px;
+    border-bottom: 2px solid #ddd;
+    border-radius: 3px;
+    padding: 8px;
 }
 
 .code {

@@ -13,10 +13,7 @@ const SiteLayout = ({ children }: { children: React.ReactNode }) => (
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                Powered by{' '}
-                <span className={styles.logo}>
-                    <Image src="/arale.png" alt="Arale Logo" width={72} height={16} />
-                </span>
+                Powered by <Image src="/arale.png" alt="Arale Logo" width={48} height={48} />
             </a>
         </footer>
     </>
